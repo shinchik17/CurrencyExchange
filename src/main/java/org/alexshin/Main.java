@@ -20,7 +20,9 @@ public class Main {
 
         try {
 
-            testService();
+            String code = "UsD ";
+            String pattern = "[a-zA-z]{3}";
+            System.out.println(code.matches(pattern));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -29,7 +31,7 @@ public class Main {
     }
 
 
-    private static void testService() throws SQLException{
+    private static void testService() throws SQLException {
         ExchangeService exchangeService = new ExchangeService();
         JDBCExchangeRatesRepository exchangeRatesRepository = new JDBCExchangeRatesRepository();
         JDBCCurrencyRepository currencyRepository = new JDBCCurrencyRepository();
@@ -38,7 +40,7 @@ public class Main {
         var secCur = currencyRepository.findById(7).get();
 
 
-        var er =  exchangeService.getFromCrossExchange(firstCur, secCur);
+        var er = exchangeService.getFromCrossExchange(firstCur, secCur);
         er.ifPresent(System.out::println);
 
 
