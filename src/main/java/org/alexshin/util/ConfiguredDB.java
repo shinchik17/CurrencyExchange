@@ -1,7 +1,12 @@
 package org.alexshin.util;
 
 
+import java.io.File;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
 import java.sql.*;
 import java.util.Properties;
 
@@ -13,15 +18,21 @@ public class ConfiguredDB {
 
     public ConfiguredDB() {
 
+
         try (InputStream propStream = ConfiguredDB.class.getClassLoader().getResourceAsStream("db.properties");) {
             Properties prop = new Properties();
             prop.load(propStream);
 
-            db_url = prop.getProperty("db.url");
+            String db_name = prop.getProperty("db.name");
+            URL resource = ConfiguredDB.class.getClassLoader().getResource(db_name);
+            String db_path = Path.of(resource.toURI()).toString();
+            String db_url_prefix = prop.getProperty("db.url_prefix");
+
+            db_url = db_url_prefix + db_path;
             db_username = prop.getProperty("db.username");
             db_password = prop.getProperty("db.password");
-//            String db_driver = prop.getProperty("db.driverClassName");
-//            Class.forName(db_driver);
+            String db_driver = prop.getProperty("db.driverClassName");
+            Class.forName(db_driver);
 
 
 
