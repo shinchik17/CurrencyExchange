@@ -7,6 +7,9 @@ target/
 .idea/
 **.iml
 
+# Other files
+/src/main/resources/myDB.db
+
 
 ### Eclipse ###
 .apt_generated
@@ -32,3 +35,4 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
