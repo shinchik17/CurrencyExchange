@@ -33,6 +33,8 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
         }
     }
 
+
+    // TODO: подумать об исключениях. Возможно, тут всё-таки надо ловить их и бросать вручную
     @Override
     public Optional<ExchangeRate> findById(int id) throws SQLException {
 

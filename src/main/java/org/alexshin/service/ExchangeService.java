@@ -16,8 +16,16 @@ public class ExchangeService {
 
 
     // TODO:
-    public ExchangeResponse getExchangeResponse(Currency baseCurrency, Currency targetCurrency, double amount){
-        return null;
+    public ExchangeResponse getExchangeResponse(Currency baseCurrency, Currency targetCurrency, double amount) throws SQLException {
+
+        ExchangeRate exchangeRate = getExchangeRate(baseCurrency, targetCurrency).orElseThrow();
+        double convertedAmount = amount * exchangeRate.getRate();
+
+        return new ExchangeResponse(baseCurrency,
+                targetCurrency,
+                exchangeRate.getRate(),
+                amount,
+                convertedAmount);
     }
 
     public Optional<ExchangeRate> getExchangeRate(Currency baseCurrency, Currency targetCurrency) throws SQLException{
@@ -33,43 +41,41 @@ public class ExchangeService {
 
         // IDEA предложила красивое упрощение вместо отдельной ветки if :)
         return getFromCrossExchange(baseCurrency, targetCurrency);
-
     }
 
 
     public Optional<ExchangeRate> getFromCrossExchange(Currency baseCurrency, Currency targetCurrency) throws SQLException {
-        // TODO: вынести в отдельный метод поиск по USD в двух направлениях
-        Optional<ExchangeRate> usdToBaseCurrencyRate = exchangeRatesRepository.findByUsdBase(baseCurrency.getCode());
-        double baseToUsdRate;
-        if (usdToBaseCurrencyRate.isEmpty()) {
-            Optional<ExchangeRate> baseCurrencyToUsdRate = exchangeRatesRepository.findByUsdTarget(baseCurrency.getCode());
-            if (baseCurrencyToUsdRate.isEmpty()){
-                return Optional.empty();
-            }
-            baseToUsdRate = baseCurrencyToUsdRate.get().getRate();
+        Optional<Double> baseToUsdRate = getCurrencyToUsdRate(baseCurrency);
+        Optional<Double> targetToUsdRate = getCurrencyToUsdRate(targetCurrency);
 
-        } else {
-            baseToUsdRate = 1 / usdToBaseCurrencyRate.get().getRate();
+        if (baseToUsdRate.isEmpty() || targetToUsdRate.isEmpty()){
+            return Optional.empty();
         }
-
-
-        Optional<ExchangeRate> usdToTargetCurrencyRate = exchangeRatesRepository.findByUsdBase(targetCurrency.getCode());
-        double targetToUsdRate;
-        if (usdToTargetCurrencyRate.isEmpty()) {
-            Optional<ExchangeRate> targetCurrencyToUsdRate = exchangeRatesRepository.findByUsdTarget(targetCurrency.getCode());
-            if (targetCurrencyToUsdRate.isEmpty()){
-                return Optional.empty();
-            }
-            targetToUsdRate = targetCurrencyToUsdRate.get().getRate();
-
-        } else {
-            targetToUsdRate = 1 / usdToTargetCurrencyRate.get().getRate();
-        }
-
 
         return Optional.of(new ExchangeRate(baseCurrency.getId(),
                                             targetCurrency.getId(),
-                                        baseToUsdRate/targetToUsdRate));
+                                        baseToUsdRate.get() / targetToUsdRate.get()));
+    }
+
+
+    public Optional<Double> getCurrencyToUsdRate(Currency currency) throws SQLException {
+
+        Optional<ExchangeRate> usdToBaseCurrencyRate = exchangeRatesRepository.findByUsdBase(currency.getCode());
+
+        double toUsdRate;
+        if (usdToBaseCurrencyRate.isEmpty()) {
+            Optional<ExchangeRate> baseCurrencyToUsdRate = exchangeRatesRepository.findByUsdTarget(currency.getCode());
+            if (baseCurrencyToUsdRate.isEmpty()){
+                return Optional.empty();
+            }
+            toUsdRate = baseCurrencyToUsdRate.get().getRate();
+
+        } else {
+            toUsdRate = 1 / usdToBaseCurrencyRate.get().getRate();
+        }
+
+        return Optional.of(toUsdRate);
+
     }
 
 
