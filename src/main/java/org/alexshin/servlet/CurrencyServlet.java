@@ -21,7 +21,7 @@ import static org.alexshin.util.Validation.*;
 import static jakarta.servlet.http.HttpServletResponse.*;
 
 
-@WebServlet(name = "CurrencyServlet", value = "/currency/*")
+@WebServlet(name = "currencyServlet", value = "/currency/*")
 public class CurrencyServlet extends HttpServlet {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final JDBCCurrencyRepository currencyRepository = new JDBCCurrencyRepository();
@@ -29,12 +29,17 @@ public class CurrencyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-//        resp.setCharacterEncoding("utf-8");
         resp.setContentType("application/json;utf-8");
         Writer respWriter = resp.getWriter();
-        String currencyCode = req.getPathInfo().replace("/", "").toUpperCase();
+        String currencyCode;
 
-        if (!isValidCurrencyCode(currencyCode)){
+        if (req.getPathInfo() != null) {
+            currencyCode = req.getPathInfo().replace("/", "").toUpperCase();
+        } else {
+            currencyCode = "";
+        }
+
+        if (!isValidCurrencyCode(currencyCode)) {
             resp.setStatus(SC_BAD_REQUEST);
             objectMapper.writeValue(respWriter,
                     new ErrorResponse(SC_BAD_REQUEST, "Incorrect currency code"));
@@ -50,19 +55,16 @@ public class CurrencyServlet extends HttpServlet {
                 return;
             }
 
-
+            resp.setStatus(200);
             objectMapper.writeValue(respWriter, optionalCurrency.get());
-            return;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
 
-
-
-
-
-
     }
+
+
+
 }
