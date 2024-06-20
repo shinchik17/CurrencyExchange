@@ -77,12 +77,26 @@ public class JDBCCurrencyRepository implements IRepository<Currency> {
         try (var connection = db.getConnection()) {
 
             String queryString = "INSERT INTO Currencies (Code, FullName, Sign) VALUES (?, ?, ?)";
-            PreparedStatement stmt = connection.prepareStatement(queryString);
+            PreparedStatement stmt = connection.prepareStatement(queryString, PreparedStatement.RETURN_GENERATED_KEYS);
+
             stmt.setString(1, entity.getCode());
             stmt.setString(2, entity.getFullName());
             stmt.setString(3, entity.getSign());
 
-            return stmt.executeUpdate();
+            int rowAffected = stmt.executeUpdate();
+
+            if (rowAffected > 0) {
+                ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()){
+                    return generatedKeys.getInt(1);
+                }
+
+                throw new SQLException("Failed to retrieve generated ID");
+
+            }
+
+            throw new SQLException("No records inserted");
+
         }
     }
 

@@ -27,7 +27,6 @@ public class CurrenciesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json;utf-8");
         Writer respWriter = resp.getWriter();
 
         try {
@@ -38,7 +37,9 @@ public class CurrenciesServlet extends HttpServlet {
 
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            resp.setStatus(SC_INTERNAL_SERVER_ERROR);
+            String errorMessage = "Database is unavailable";
+            objectMapper.writeValue(respWriter, new ErrorResponse(SC_INTERNAL_SERVER_ERROR, errorMessage));
         }
 
 
@@ -56,11 +57,11 @@ public class CurrenciesServlet extends HttpServlet {
 
         String errorMessage = "";
         if (!isValidString(name)) {
-            errorMessage = "Invalid currency name: " + name;
+            errorMessage = String.format("Invalid currency name: <%s>", name);
         } else if (!isValidCurrencyCode(code)) {
-            errorMessage = "Invalid currency code: " + code;
+            errorMessage = String.format("Invalid currency code: <%s>", code);
         } else if (!isValidString(sign)) {
-            errorMessage = "Invalid currency sign: " + sign;
+            errorMessage = String.format("Invalid currency sign: <%s>", sign);
         }
 
         if (!errorMessage.isBlank()) {
@@ -70,7 +71,27 @@ public class CurrenciesServlet extends HttpServlet {
         }
 
 
+        try {
 
+            if (currencyRepository.findByCode(code).isPresent()) {
+                resp.setStatus(SC_CONFLICT);
+                errorMessage = "Currency with such code already exists";
+                objectMapper.writeValue(respWriter, new ErrorResponse(SC_CONFLICT, errorMessage));
+                return;
+            }
+
+            Currency currency = new Currency(code, name, sign);
+            int generatedID = currencyRepository.save(currency);
+            currency.setId(generatedID);
+
+            resp.setStatus(SC_OK);
+            objectMapper.writeValue(respWriter, currency);
+
+        } catch (SQLException e) {
+            resp.setStatus(SC_INTERNAL_SERVER_ERROR);
+            errorMessage = "Database is unavailable";
+            objectMapper.writeValue(respWriter, new ErrorResponse(SC_INTERNAL_SERVER_ERROR, errorMessage));
+        }
 
 
     }

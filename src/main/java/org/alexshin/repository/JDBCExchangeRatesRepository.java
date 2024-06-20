@@ -106,7 +106,18 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
             stmt.setInt(2, entity.getTargetCurrencyId());
             stmt.setDouble(3, entity.getRate());
 
-            return stmt.executeUpdate();
+            int rowAffected = stmt.executeUpdate();
+
+            if (rowAffected > 0) {
+                ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()){
+                    return generatedKeys.getInt(1);
+                }
+
+                throw new SQLException("Failed to retrieve generated ID");
+            }
+
+            throw new SQLException("No records inserted");
         }
     }
 
