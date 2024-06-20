@@ -3,11 +3,12 @@ package org.alexshin.service;
 import org.alexshin.model.Currency;
 import org.alexshin.model.ExchangeRate;
 import org.alexshin.model.response.ExchangeResponse;
-import org.alexshin.repository.IRepository;
 import org.alexshin.repository.JDBCCurrencyRepository;
 import org.alexshin.repository.JDBCExchangeRatesRepository;
 
 import java.sql.SQLException;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class ExchangeService {
@@ -28,14 +29,14 @@ public class ExchangeService {
                 convertedAmount);
     }
 
-    public Optional<ExchangeRate> getExchangeRate(Currency baseCurrency, Currency targetCurrency) throws SQLException{
+    public Optional<ExchangeRate> getExchangeRate(Currency baseCurrency, Currency targetCurrency) throws SQLException, NoSuchElementException {
         var exchangeRate = getFromDirectExchange(baseCurrency, targetCurrency);
-        if (exchangeRate.isPresent()){
+        if (exchangeRate.isPresent()) {
             return exchangeRate;
         }
 
         var inverseExchangeRate = getFromInverseExchange(baseCurrency, targetCurrency);
-        if (inverseExchangeRate.isPresent()){
+        if (inverseExchangeRate.isPresent()) {
             return inverseExchangeRate;
         }
 
@@ -43,40 +44,67 @@ public class ExchangeService {
         return getFromCrossExchange(baseCurrency, targetCurrency);
     }
 
+    public Optional<ExchangeRate> getFromCrossExchange(Currency baseCurrency, Currency targetCurrency) throws SQLException, NoSuchElementException {
 
-    public Optional<ExchangeRate> getFromCrossExchange(Currency baseCurrency, Currency targetCurrency) throws SQLException {
-        Optional<Double> baseToUsdRate = getCurrencyToUsdRate(baseCurrency);
-        Optional<Double> targetToUsdRate = getCurrencyToUsdRate(targetCurrency);
+        List<ExchangeRate> erList = exchangeRatesRepository.findByCodesWithUsdBase(baseCurrency.getCode(),
+                targetCurrency.getCode());
 
-        if (baseToUsdRate.isEmpty() || targetToUsdRate.isEmpty()){
+        Optional<ExchangeRate> usdToBaseER = erList.stream()
+                .filter(er -> er.getTargetCurrency().equals(baseCurrency))
+                .findFirst();
+
+        if (usdToBaseER.isEmpty()){
             return Optional.empty();
         }
 
-        return Optional.of(new ExchangeRate(baseCurrency.getId(),
-                                            targetCurrency.getId(),
-                                        baseToUsdRate.get() / targetToUsdRate.get()));
-    }
+        Optional<ExchangeRate> usdToTargetER = erList.stream()
+                .filter(er -> er.getTargetCurrency().equals(targetCurrency))
+                .findFirst();
 
-
-    public Optional<Double> getCurrencyToUsdRate(Currency currency) throws SQLException {
-
-        Optional<ExchangeRate> usdToBaseCurrencyRate = exchangeRatesRepository.findByUsdBase(currency.getCode());
-
-        double toUsdRate;
-        if (usdToBaseCurrencyRate.isEmpty()) {
-            Optional<ExchangeRate> baseCurrencyToUsdRate = exchangeRatesRepository.findByUsdTarget(currency.getCode());
-            if (baseCurrencyToUsdRate.isEmpty()){
-                return Optional.empty();
-            }
-            toUsdRate = baseCurrencyToUsdRate.get().getRate();
-
-        } else {
-            toUsdRate = 1 / usdToBaseCurrencyRate.get().getRate();
+        if (usdToTargetER.isEmpty()){
+            return Optional.empty();
         }
 
-        return Optional.of(toUsdRate);
+        double rate = usdToBaseER.get().getRate() / usdToTargetER.get().getRate();
+
+        return Optional.of(new ExchangeRate(baseCurrency, targetCurrency, rate));
 
     }
+
+
+//    public Optional<ExchangeRate> getFromCrossExchange(Currency baseCurrency, Currency targetCurrency) throws SQLException {
+//        Optional<Double> baseToUsdRate = getCurrencyToUsdRate(baseCurrency);
+//        Optional<Double> targetToUsdRate = getCurrencyToUsdRate(targetCurrency);
+//
+//        if (baseToUsdRate.isEmpty() || targetToUsdRate.isEmpty()){
+//            return Optional.empty();
+//        }
+//
+//        return Optional.of(new ExchangeRate(baseCurrency,
+//                targetCurrency,
+//                baseToUsdRate.get() / targetToUsdRate.get()));
+//    }
+//
+//
+//    public Optional<Double> getCurrencyToUsdRate(Currency currency) throws SQLException {
+//
+//        Optional<ExchangeRate> usdToBaseCurrencyRate = exchangeRatesRepository.findFirstWithUsdBase(currency.getCode());
+//
+//        double toUsdRate;
+//        if (usdToBaseCurrencyRate.isEmpty()) {
+//            Optional<ExchangeRate> baseCurrencyToUsdRate = exchangeRatesRepository.findFirstWithUsdTarget(currency.getCode());
+//            if (baseCurrencyToUsdRate.isEmpty()){
+//                return Optional.empty();
+//            }
+//            toUsdRate = baseCurrencyToUsdRate.get().getRate();
+//
+//        } else {
+//            toUsdRate = 1 / usdToBaseCurrencyRate.get().getRate();
+//        }
+//
+//        return Optional.of(toUsdRate);
+//
+//    }
 
 
     public Optional<ExchangeRate> getFromInverseExchange(Currency baseCurrency, Currency targetCurrency) throws SQLException {
@@ -90,9 +118,9 @@ public class ExchangeService {
 
         ExchangeRate inverseExchangeRate = optionalInverseExchangeRate.get();
 
-        return Optional.of(new ExchangeRate(inverseExchangeRate.getTargetCurrencyId(),
-                                            inverseExchangeRate.getBaseCurrencyId(),
-                                        1 / inverseExchangeRate.getRate()));
+        return Optional.of(new ExchangeRate(inverseExchangeRate.getTargetCurrency(),
+                inverseExchangeRate.getBaseCurrency(),
+                1 / inverseExchangeRate.getRate()));
     }
 
 
