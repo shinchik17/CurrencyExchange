@@ -1,4 +1,4 @@
-package org.alexshin.servlet;
+package org.alexshin.servlet.Currency;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -48,7 +48,6 @@ public class CurrenciesServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json;utf-8");
         Writer respWriter = resp.getWriter();
 
         String name = req.getParameter("name");

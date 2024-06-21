@@ -48,8 +48,6 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
         }
     }
 
-
-    // TODO: подумать об исключениях. Возможно, тут всё-таки надо ловить их и бросать вручную
     @Override
     public Optional<ExchangeRate> findById(int id) throws SQLException {
 
@@ -168,16 +166,6 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
 
     }
 
-//    public Optional<ExchangeRate> findFirstWithUsdBase(String targetCurrencyCode) throws SQLException {
-//        String usdCode = "USD";
-//        return findByCodes(usdCode, targetCurrencyCode);
-//    }
-//
-//    public Optional<ExchangeRate> findFirstWithUsdTarget(String targetCurrencyCode) throws SQLException {
-//        String usdCode = "USD";
-//        return findByCodes(targetCurrencyCode, usdCode);
-//    }
-
 
     @Override
     public int save(ExchangeRate entity) throws SQLException {
@@ -244,15 +232,6 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
 
     }
 
-
-//    private ExchangeRate getExchangeRate(ResultSet resultSet) throws SQLException {
-//        return new ExchangeRate(
-//                resultSet.getInt(1),
-//                resultSet.getInt(2),
-//                resultSet.getInt(3),
-//                resultSet.getDouble(4)
-//        );
-//    }
 
     private ExchangeRate getExchangeRate(ResultSet resultSet) throws SQLException {
 

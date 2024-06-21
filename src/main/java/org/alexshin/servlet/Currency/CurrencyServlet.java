@@ -1,4 +1,4 @@
-package org.alexshin.servlet;
+package org.alexshin.servlet.Currency;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

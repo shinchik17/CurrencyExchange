@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpFilter;
 
 import java.io.IOException;
 
-
+// TODO: вынести проверку кол-ва параметров запроса сюда
 @WebFilter(filterName = "baseFilter", urlPatterns = "/*")
 public class FilterServlet extends HttpFilter {
 
