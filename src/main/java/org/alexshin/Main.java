@@ -1,15 +1,11 @@
 package org.alexshin;
 
 import org.alexshin.model.Currency;
-import org.alexshin.model.ExchangeRate;
 import org.alexshin.repository.JDBCCurrencyRepository;
 import org.alexshin.repository.JDBCExchangeRatesRepository;
 import org.alexshin.service.ExchangeService;
-import org.alexshin.util.ConfiguredDB;
 
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -40,8 +36,8 @@ public class Main {
         var secCur = currencyRepository.findById(7).get();
 
 
-        var er = exchangeService.getFromCrossExchange(firstCur, secCur);
-        er.ifPresent(System.out::println);
+//        var er = exchangeService.getFromCrossExchange(firstCur, secCur);
+//        er.ifPresent(System.out::println);
 
 
     }

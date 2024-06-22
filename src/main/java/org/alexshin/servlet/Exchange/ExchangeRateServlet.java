@@ -1,4 +1,4 @@
-package org.alexshin.servlet.ExchangeRate;
+package org.alexshin.servlet.Exchange;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.alexshin.model.ExchangeRate;
-import org.alexshin.model.response.ErrorResponse;
+import org.alexshin.DTO.ErrorResponse;
 import org.alexshin.repository.JDBCExchangeRatesRepository;
 
 import java.io.IOException;

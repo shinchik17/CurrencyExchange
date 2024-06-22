@@ -7,9 +7,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.alexshin.model.Currency;
-import org.alexshin.model.response.ErrorResponse;
+import org.alexshin.DTO.ErrorResponse;
 import org.alexshin.repository.JDBCCurrencyRepository;
-import org.alexshin.util.Validation;
 
 import java.io.IOException;
 import java.io.Writer;

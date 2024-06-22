@@ -1,4 +1,4 @@
-package org.alexshin.servlet.ExchangeRate;
+package org.alexshin.servlet.Exchange;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.alexshin.model.ExchangeRate;
-import org.alexshin.model.response.ErrorResponse;
+import org.alexshin.DTO.ErrorResponse;
 import org.alexshin.repository.JDBCCurrencyRepository;
 import org.alexshin.repository.JDBCExchangeRatesRepository;
 import org.sqlite.SQLiteException;
@@ -74,7 +74,7 @@ public class ExchangeRatesServlet extends HttpServlet {
 
             ExchangeRate exchangeRate = new ExchangeRate(
                     currencyRepository.findByCode(baseCurrencyCode).orElseThrow(),
-                    currencyRepository.findByCode(baseCurrencyCode).orElseThrow(),
+                    currencyRepository.findByCode(targetCurrencyCode).orElseThrow(),
                     Double.parseDouble(rate)
             );
 
@@ -87,7 +87,6 @@ public class ExchangeRatesServlet extends HttpServlet {
 
         } catch (SQLException e) {
 
-            // TODO: распарсить случай, когда курс уже существует
             if (((SQLiteException) e).getResultCode().name().equals("SQLITE_CONSTRAINT_UNIQUE")) {
                 resp.setStatus(SC_CONFLICT);
                 errorMessage = "Specified exchange rate already exists";

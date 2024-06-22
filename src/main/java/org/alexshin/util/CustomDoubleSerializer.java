@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class CustomDoubleSerializer extends JsonSerializer<Double> {
-    private int precision = 6;
+    private int precision = 2;
 
     public CustomDoubleSerializer (int precision) {
         this.precision = precision;

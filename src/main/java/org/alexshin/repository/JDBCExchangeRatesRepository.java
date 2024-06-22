@@ -198,14 +198,6 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
 
         try (var connection = db.getConnection()) {
 
-            // TODO: стоит ли сделать доп. запрос, чтобы обновлять запись, без знания её ID?
-//            String preQueryString = "SELECT * FROM ExchangeRates WHERE BaseCurrencyId=? AND TargetCurrencyId=?";
-//            PreparedStatement prestmt = connection.prepareStatement(preQueryString);
-//            prestmt.setInt(1, object.getBaseCurrencyId());
-//            prestmt.setInt(2, object.getTargetCurrencyId());
-//            ResultSet resultSet = prestmt.executeQuery();
-
-
             String queryString = "UPDATE ExchangeRates " +
                     "SET BaseCurrencyId  = ?, TargetCurrencyId = ?, Rate = ? " +
                     "WHERE id=?";

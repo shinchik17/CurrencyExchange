@@ -9,13 +9,12 @@ import jakarta.servlet.http.HttpFilter;
 
 import java.io.IOException;
 
-// TODO: вынести проверку кол-ва параметров запроса сюда
+
 @WebFilter(filterName = "baseFilter", urlPatterns = "/*")
 public class FilterServlet extends HttpFilter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-//        super.doFilter(req, res, chain);
 
         res.setContentType("application/json;utf-8");
         chain.doFilter(req, res);
