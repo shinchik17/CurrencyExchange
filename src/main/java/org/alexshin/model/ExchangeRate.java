@@ -1,9 +1,11 @@
 package org.alexshin.model;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.alexshin.util.CustomDoubleSerializer;
 
 @Data
 @AllArgsConstructor
@@ -12,6 +14,7 @@ public class ExchangeRate {
     private int id;
     private Currency baseCurrency;
     private Currency targetCurrency;
+    @JsonSerialize(using = CustomDoubleSerializer.class)
     private double rate;
 
 

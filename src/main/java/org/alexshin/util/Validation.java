@@ -13,22 +13,11 @@ public class Validation {
 
 
     public static boolean isValidRate(String rate) {
-
-        // TODO:  скорее всего избыточная проверка parseDouble, чекнуть потом
-        if (isValidString(rate) && rate.matches("^[0-9]+\\.*[0-9]*$")) {
-            try {
-                Double.parseDouble(rate);
-                return true;
-            } catch (NumberFormatException e){
-                return false;
-            }
-        }
-
-        return false;
+        return isValidString(rate) && rate.matches("^[0-9]+\\.*[0-9]*$");
     }
 
     public static boolean isValidExchangeRateString(String rateString){
-        return rateString.matches("[a-zA-Z]{6}");
+        return isValidString(rateString) && rateString.matches("[a-zA-Z]{6}");
     }
 
 

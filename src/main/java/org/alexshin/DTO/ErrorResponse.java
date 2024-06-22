@@ -1,4 +1,4 @@
-package org.alexshin.model.response;
+package org.alexshin.DTO;
 
 
 import lombok.AllArgsConstructor;
