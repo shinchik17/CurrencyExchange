@@ -39,6 +39,7 @@ public class ExchangeRatesServlet extends HttpServlet {
             objectMapper.writeValue(respWriter, allExchangeRates);
 
         } catch (SQLException e) {
+
             resp.setStatus(SC_INTERNAL_SERVER_ERROR);
             String errorMessage = "Database is unavailable";
             objectMapper.writeValue(respWriter, new ErrorResponse(SC_INTERNAL_SERVER_ERROR, errorMessage));

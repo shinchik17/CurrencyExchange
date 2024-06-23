@@ -3,6 +3,7 @@ package org.alexshin.repository;
 import org.alexshin.model.Currency;
 import org.alexshin.model.ExchangeRate;
 import org.alexshin.util.ConfiguredDB;
+import org.alexshin.util.ConfiguredDataSource;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,12 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
-    private final ConfiguredDB db = new ConfiguredDB();
+//    private final ConfiguredDB db = new ConfiguredDB();
+//    private final ConfiguredDB ConfiguredDataSource = new ConfiguredDB();
 
     @Override
     public List<ExchangeRate> findAll() throws SQLException {
 
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
             List<ExchangeRate> rateList = new ArrayList<>();
 
             String queryString = """
@@ -51,7 +53,7 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
     @Override
     public Optional<ExchangeRate> findById(int id) throws SQLException {
 
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
 
             String queryString = """
                     SELECT base_cur.ID         as bc_id,
@@ -86,7 +88,7 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
 
     public Optional<ExchangeRate> findByCodes(String baseCurrencyCode, String targetCurrencyCode) throws SQLException {
 
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
             String queryString = """
                     SELECT base_cur.ID         as bc_id,
                            base_cur.Code       as bc_code,
@@ -125,7 +127,7 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
 
     public List<ExchangeRate> findByCodesWithUsdBase(String baseCurrencyCode, String targetCurrencyCode) throws SQLException {
 
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
 
             String preQueryString = """
                     SELECT base_cur.ID         as bc_id,
@@ -169,7 +171,7 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
 
     @Override
     public int save(ExchangeRate entity) throws SQLException {
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
 
             String queryString = "INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate) " +
                     "VALUES (?, ?, ?)";
@@ -196,7 +198,7 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
     @Override
     public void update(ExchangeRate entity) throws SQLException {
 
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
 
             String queryString = "UPDATE ExchangeRates " +
                     "SET BaseCurrencyId  = ?, TargetCurrencyId = ?, Rate = ? " +
@@ -214,7 +216,7 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
     @Override
     public void delete(int id) throws SQLException {
 
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
 
             String queryString = "DELETE FROM ExchangeRates WHERE id=?";
             PreparedStatement stmt = connection.prepareStatement(queryString);

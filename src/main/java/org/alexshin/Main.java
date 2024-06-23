@@ -4,6 +4,7 @@ import org.alexshin.model.Currency;
 import org.alexshin.repository.JDBCCurrencyRepository;
 import org.alexshin.repository.JDBCExchangeRatesRepository;
 import org.alexshin.service.ExchangeService;
+import org.alexshin.util.ConfiguredDB;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -14,11 +15,10 @@ public class Main {
         System.out.println("Hello world!");
 
 
-        try {
+        try  {
 
-            String code = "UsD ";
-            String pattern = "[a-zA-z]{3}";
-            System.out.println(code.matches(pattern));
+            testCurrencyRep();
+
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -72,14 +72,14 @@ public class Main {
     private static void testCurrencyRep() throws SQLException {
         JDBCCurrencyRepository currencyRepository = new JDBCCurrencyRepository();
 
-        Currency newCur = new Currency(10, "AUF", "VOLCHARA", "SS");
-        //Optional<Currency> currency = currencyRepository.findById(10);
-        Optional<Currency> currency = currencyRepository.findByCode("AUF");
-        currency.ifPresent(System.out::println);
+//        Currency newCur = new Currency(10, "AUF", "VOLCHARA", "SS");
+//        //Optional<Currency> currency = currencyRepository.findById(10);
+//        Optional<Currency> currency = currencyRepository.findByCode("AUF");
+//        currency.ifPresent(System.out::println);
 
-//            for (Currency cur : currencyRepository.findAll()) {
-//                System.out.println(cur);
-//            }
+            for (Currency cur : currencyRepository.findAll()) {
+                System.out.println(cur);
+            }
 
 //            System.out.println(currencyRepository.save(newCur));
 //            currencyRepository.update(newCur);

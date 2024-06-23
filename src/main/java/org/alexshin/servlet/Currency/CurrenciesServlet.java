@@ -37,6 +37,7 @@ public class CurrenciesServlet extends HttpServlet {
 
 
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             resp.setStatus(SC_INTERNAL_SERVER_ERROR);
             String errorMessage = "Database is unavailable";
             objectMapper.writeValue(respWriter, new ErrorResponse(SC_INTERNAL_SERVER_ERROR, errorMessage));

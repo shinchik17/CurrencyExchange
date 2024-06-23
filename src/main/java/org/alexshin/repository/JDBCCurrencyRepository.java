@@ -2,7 +2,7 @@ package org.alexshin.repository;
 
 
 import org.alexshin.model.Currency;
-import org.alexshin.util.ConfiguredDB;
+import org.alexshin.util.ConfiguredDataSource;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,12 +13,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class JDBCCurrencyRepository implements IRepository<Currency> {
-    private final ConfiguredDB db = new ConfiguredDB();
+//    private final ConfiguredDB db = new ConfiguredDB();
+//    private final ConfiguredDataSource ConfiguredDataSource = ConfiguredDataSource;
 
     @Override
     public List<Currency> findAll() throws SQLException {
 
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
             List<Currency> currencyList = new ArrayList<>();
 
             String queryString = "SELECT * FROM Currencies";
@@ -36,7 +37,7 @@ public class JDBCCurrencyRepository implements IRepository<Currency> {
     @Override
     public Optional<Currency> findById(int id) throws SQLException {
 
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
             String queryString = "SELECT * FROM Currencies WHERE id=?";
             PreparedStatement stmt = connection.prepareStatement(queryString);
             stmt.setInt(1, id);
@@ -55,7 +56,7 @@ public class JDBCCurrencyRepository implements IRepository<Currency> {
 
     public Optional<Currency> findByCode(String code) throws SQLException {
 
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
             String queryString = "SELECT * FROM Currencies WHERE Code=?";
             PreparedStatement stmt = connection.prepareStatement(queryString);
             stmt.setString(1, code);
@@ -74,7 +75,7 @@ public class JDBCCurrencyRepository implements IRepository<Currency> {
     @Override
     public int save(Currency entity) throws SQLException {
 
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
 
             String queryString = "INSERT INTO Currencies (Code, FullName, Sign) VALUES (?, ?, ?)";
             PreparedStatement stmt = connection.prepareStatement(queryString, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -103,7 +104,7 @@ public class JDBCCurrencyRepository implements IRepository<Currency> {
     @Override
     public void update(Currency entity) throws SQLException {
 
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
 
             String queryString = "UPDATE Currencies " +
                     "SET Code  = ?, FullName = ?, Sign = ? " +
@@ -121,7 +122,7 @@ public class JDBCCurrencyRepository implements IRepository<Currency> {
     @Override
     public void delete(int id) throws SQLException {
 
-        try (var connection = db.getConnection()) {
+        try (var connection = ConfiguredDataSource.getConnection()) {
 
             String queryString = "DELETE FROM Currencies WHERE id=?";
             PreparedStatement stmt = connection.prepareStatement(queryString);

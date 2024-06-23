@@ -16,7 +16,8 @@ import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
 import static jakarta.servlet.http.HttpServletResponse.*;
-import static org.alexshin.util.Validation.*;
+import static org.alexshin.util.Validation.isValidCurrencyCode;
+import static org.alexshin.util.Validation.isValidRate;
 
 @WebServlet(name = "exchange", urlPatterns = "/exchange")
 public class ExchangeServlet extends HttpServlet {
@@ -53,29 +54,7 @@ public class ExchangeServlet extends HttpServlet {
                     baseCode.toUpperCase(),
                     targetCode.toUpperCase(),
                     Double.parseDouble(amountString));
-//
-//            Optional<ExchangeRate> optExchangeRate = exchangeRatesRepository.findByCodes(
-//                    baseCode.toUpperCase(),
-//                    targetCode.toUpperCase());
-//
-//            if (optExchangeRate.isEmpty()) {
-//                resp.setStatus(SC_NOT_FOUND);
-//                errorMessage = "Exchange rate for given currencies not found";
-//                objectMapper.writeValue(respWriter, new ErrorResponse(SC_NOT_FOUND, errorMessage));
-//                return;
-//            }
 
-//            ExchangeRate exchangeRate = optExchangeRate.get();
-//            double rate = exchangeRate.getRate();
-//            double amount = Double.parseDouble(amountString);
-//
-//            ExchangeResponse exchangeResponse = new ExchangeResponse(
-//                    exchangeRate.getBaseCurrency(),
-//                    exchangeRate.getTargetCurrency(),
-//                    rate,
-//                    amount,
-//                    amount * rate
-//            );
 
             resp.setStatus(SC_OK);
             objectMapper.writeValue(respWriter, exchangeResponse);
