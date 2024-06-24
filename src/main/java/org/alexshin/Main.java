@@ -4,10 +4,8 @@ import org.alexshin.model.Currency;
 import org.alexshin.repository.JDBCCurrencyRepository;
 import org.alexshin.repository.JDBCExchangeRatesRepository;
 import org.alexshin.service.ExchangeService;
-import org.alexshin.util.ConfiguredDB;
 
 import java.sql.SQLException;
-import java.util.Optional;
 
 
 public class Main {

@@ -1,9 +1,11 @@
 package org.alexshin.service;
 
-import org.alexshin.model.ExchangeRate;
 import org.alexshin.DTO.ExchangeResponse;
+import org.alexshin.model.ExchangeRate;
 import org.alexshin.repository.JDBCExchangeRatesRepository;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -13,10 +15,10 @@ public class ExchangeService {
     private static final JDBCExchangeRatesRepository exchangeRatesRepository = new JDBCExchangeRatesRepository();
 
 
-    public ExchangeResponse getExchangeResponse(String baseCode, String targetCode, double amount) throws SQLException, NoSuchElementException {
+    public ExchangeResponse getExchangeResponse(String baseCode, String targetCode, BigDecimal amount) throws SQLException, NoSuchElementException {
 
         ExchangeRate exchangeRate = getExchangeRate(baseCode, targetCode).orElseThrow();
-        double convertedAmount = amount * exchangeRate.getRate();
+        BigDecimal convertedAmount = amount.multiply(exchangeRate.getRate()).setScale(2, RoundingMode.HALF_UP);
 
         return new ExchangeResponse(exchangeRate.getBaseCurrency(),
                 exchangeRate.getBaseCurrency(),
@@ -60,7 +62,7 @@ public class ExchangeService {
             return Optional.empty();
         }
 
-        double rate = usdToBaseER.get().getRate() / usdToTargetER.get().getRate();
+        BigDecimal rate = usdToBaseER.get().getRate().divide(usdToTargetER.get().getRate(), RoundingMode.HALF_UP);
 
         return Optional.of(new ExchangeRate(
                 usdToBaseER.get().getBaseCurrency(),
@@ -82,9 +84,12 @@ public class ExchangeService {
 
         ExchangeRate inverseExchangeRate = optionalInverseExchangeRate.get();
 
-        return Optional.of(new ExchangeRate(inverseExchangeRate.getTargetCurrency(),
+        return Optional.of(new ExchangeRate(
+                inverseExchangeRate.getTargetCurrency(),
                 inverseExchangeRate.getBaseCurrency(),
-                1 / inverseExchangeRate.getRate()));
+                (new BigDecimal(1)).divide(inverseExchangeRate.getRate(), RoundingMode.HALF_UP)
+                )
+        );
     }
 
 

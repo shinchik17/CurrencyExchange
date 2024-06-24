@@ -6,12 +6,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.alexshin.model.ExchangeRate;
 import org.alexshin.DTO.ErrorResponse;
+import org.alexshin.model.ExchangeRate;
 import org.alexshin.repository.JDBCExchangeRatesRepository;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -104,7 +105,7 @@ public class ExchangeRateServlet extends HttpServlet {
             }
 
             ExchangeRate exchangeRate = optExchangeRate.get();
-            exchangeRate.setRate(Double.parseDouble(rateString));
+            exchangeRate.setRate(BigDecimal.valueOf(Double.parseDouble(rateString)));
             exchangeRatesRepository.update(exchangeRate);
 
             resp.setStatus(SC_OK);

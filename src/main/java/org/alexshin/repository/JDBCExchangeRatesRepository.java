@@ -2,7 +2,6 @@ package org.alexshin.repository;
 
 import org.alexshin.model.Currency;
 import org.alexshin.model.ExchangeRate;
-import org.alexshin.util.ConfiguredDB;
 import org.alexshin.util.ConfiguredDataSource;
 
 import java.sql.PreparedStatement;
@@ -178,7 +177,7 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
             PreparedStatement stmt = connection.prepareStatement(queryString);
             stmt.setInt(1, entity.getBaseCurrency().getId());
             stmt.setInt(2, entity.getTargetCurrency().getId());
-            stmt.setDouble(3, entity.getRate());
+            stmt.setBigDecimal(3, entity.getRate());
 
             int rowAffected = stmt.executeUpdate();
 
@@ -207,7 +206,7 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
             PreparedStatement stmt = connection.prepareStatement(queryString);
             stmt.setInt(1, entity.getBaseCurrency().getId());
             stmt.setInt(2, entity.getTargetCurrency().getId());
-            stmt.setDouble(3, entity.getRate());
+            stmt.setBigDecimal(3, entity.getRate());
             stmt.setInt(4, entity.getId());
             stmt.executeUpdate();
         }
@@ -243,7 +242,7 @@ public class JDBCExchangeRatesRepository implements IRepository<ExchangeRate> {
                         resultSet.getString(7),
                         resultSet.getString(8)
                 ),
-                resultSet.getDouble(10)
+                resultSet.getBigDecimal(10)
         );
     }
 

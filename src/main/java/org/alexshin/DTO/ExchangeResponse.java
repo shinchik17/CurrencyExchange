@@ -1,12 +1,12 @@
 package org.alexshin.DTO;
 
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.alexshin.model.Currency;
-import org.alexshin.util.CustomDoubleSerializer;
+
+import java.math.BigDecimal;
 
 
 @Data
@@ -15,11 +15,8 @@ import org.alexshin.util.CustomDoubleSerializer;
 public class ExchangeResponse {
     private Currency baseCurrency;
     private Currency targetCurrency;
-    @JsonSerialize(using = CustomDoubleSerializer.class)
-    private double exchangeRate;
-    @JsonSerialize(using = CustomDoubleSerializer.class)
-    private double amount;
-    @JsonSerialize(using = CustomDoubleSerializer.class)
-    private double convertedAmount;
+    private BigDecimal exchangeRate;
+    private BigDecimal amount;
+    private BigDecimal convertedAmount;
 }
 

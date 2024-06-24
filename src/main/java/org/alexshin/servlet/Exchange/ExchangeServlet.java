@@ -12,6 +12,7 @@ import org.alexshin.service.ExchangeService;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
@@ -53,7 +54,7 @@ public class ExchangeServlet extends HttpServlet {
             ExchangeResponse exchangeResponse = exchangeService.getExchangeResponse(
                     baseCode.toUpperCase(),
                     targetCode.toUpperCase(),
-                    Double.parseDouble(amountString));
+                    BigDecimal.valueOf(Double.parseDouble(amountString)));
 
 
             resp.setStatus(SC_OK);

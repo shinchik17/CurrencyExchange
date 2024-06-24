@@ -6,14 +6,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.alexshin.model.ExchangeRate;
 import org.alexshin.DTO.ErrorResponse;
+import org.alexshin.model.ExchangeRate;
 import org.alexshin.repository.JDBCCurrencyRepository;
 import org.alexshin.repository.JDBCExchangeRatesRepository;
 import org.sqlite.SQLiteException;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -76,7 +77,7 @@ public class ExchangeRatesServlet extends HttpServlet {
             ExchangeRate exchangeRate = new ExchangeRate(
                     currencyRepository.findByCode(baseCurrencyCode).orElseThrow(),
                     currencyRepository.findByCode(targetCurrencyCode).orElseThrow(),
-                    Double.parseDouble(rate)
+                    BigDecimal.valueOf(Double.parseDouble(rate))
             );
 
             int generatedID = exchangeRatesRepository.save(exchangeRate);
