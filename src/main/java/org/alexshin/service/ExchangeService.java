@@ -1,6 +1,7 @@
 package org.alexshin.service;
 
 import org.alexshin.DTO.ExchangeResponse;
+import org.alexshin.mapper.ExchangeRateMapper;
 import org.alexshin.model.ExchangeRate;
 import org.alexshin.repository.JDBCExchangeRatesRepository;
 
@@ -13,18 +14,13 @@ import java.util.Optional;
 
 public class ExchangeService {
     private static final JDBCExchangeRatesRepository exchangeRatesRepository = new JDBCExchangeRatesRepository();
-
+    private final ExchangeRateMapper mapper = ExchangeRateMapper.INSTANCE;
 
     public ExchangeResponse getExchangeResponse(String baseCode, String targetCode, BigDecimal amount) throws SQLException, NoSuchElementException {
 
         ExchangeRate exchangeRate = getExchangeRate(baseCode, targetCode).orElseThrow();
-        BigDecimal convertedAmount = amount.multiply(exchangeRate.getRate()).setScale(2, RoundingMode.HALF_UP);
+        return mapper.exchangeRateToResponse(exchangeRate, amount);
 
-        return new ExchangeResponse(exchangeRate.getBaseCurrency(),
-                exchangeRate.getBaseCurrency(),
-                exchangeRate.getRate(),
-                amount,
-                convertedAmount);
     }
 
     public Optional<ExchangeRate> getExchangeRate(String baseCode, String targetCode) throws SQLException {

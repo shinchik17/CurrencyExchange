@@ -15,7 +15,6 @@ public class ExchangeRate {
     private Currency baseCurrency;
     private Currency targetCurrency;
 
-    // TODO: MapMapper/MapStruct
     // TODO: Тестовый фронтенд
     // TODO: деплой на VPS
     private BigDecimal rate;

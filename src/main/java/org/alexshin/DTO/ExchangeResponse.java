@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 public class ExchangeResponse {
     private Currency baseCurrency;
     private Currency targetCurrency;
-    private BigDecimal exchangeRate;
+    private BigDecimal rate;
     private BigDecimal amount;
     private BigDecimal convertedAmount;
 }
