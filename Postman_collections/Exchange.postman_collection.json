@@ -1,0 +1,165 @@
+{
+	"info": {
+		"_postman_id": "be2eb99a-2791-4f73-be12-5bdb5b024f51",
+		"name": "Exchange",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33719558"
+	},
+	"item": [
+		{
+			"name": "Update data",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/exchangeRate/usdeur?rate=0.94",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"exchangeRate",
+						"usdeur"
+					],
+					"query": [
+						{
+							"key": "rate",
+							"value": "0.94"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/exchangeRates?baseCurrencyCode=ZWG&targetCurrencyCode=RUB&rate=14.88",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"exchangeRates"
+					],
+					"query": [
+						{
+							"key": "baseCurrencyCode",
+							"value": "ZWG"
+						},
+						{
+							"key": "targetCurrencyCode",
+							"value": "RUB"
+						},
+						{
+							"key": "rate",
+							"value": "14.88"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/exchangeRate/usdeur",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"exchangeRate",
+						"usdeur"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/exchangeRates",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"exchangeRates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Convert",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/exchange?from=usd&to=eur&amount=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"exchange"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "usd"
+						},
+						{
+							"key": "to",
+							"value": "eur"
+						},
+						{
+							"key": "amount",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080/api/",
+			"type": "string"
+		},
+		{
+			"value": "",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}
