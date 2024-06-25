@@ -1,4 +1,4 @@
-package org.alexshin.servlet.Currency;
+package org.alexshin.servlet.currency;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -6,17 +6,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.alexshin.model.Currency;
-import org.alexshin.DTO.ErrorResponse;
+import org.alexshin.model.ErrorResponse;
+import org.alexshin.model.entity.Currency;
 import org.alexshin.repository.JDBCCurrencyRepository;
-
-import static org.alexshin.util.Validation.*;
-import static jakarta.servlet.http.HttpServletResponse.*;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
 import java.util.List;
+
+import static jakarta.servlet.http.HttpServletResponse.*;
+import static org.alexshin.util.Validation.isValidCurrencyCode;
+import static org.alexshin.util.Validation.isValidString;
 
 
 @WebServlet(name = "currenciesServlet", urlPatterns = "/currencies")
@@ -72,6 +73,8 @@ public class CurrenciesServlet extends HttpServlet {
 
 
         try {
+
+            code = code.toUpperCase();
 
             if (currencyRepository.findByCode(code).isPresent()) {
                 resp.setStatus(SC_CONFLICT);

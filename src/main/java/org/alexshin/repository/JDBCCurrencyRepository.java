@@ -1,7 +1,7 @@
 package org.alexshin.repository;
 
 
-import org.alexshin.model.Currency;
+import org.alexshin.model.entity.Currency;
 import org.alexshin.util.ConfiguredDataSource;
 
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class JDBCCurrencyRepository implements IRepository<Currency> {
+public class JDBCCurrencyRepository implements Repository<Currency> {
 //    private final ConfiguredDB db = new ConfiguredDB();
 //    private final ConfiguredDataSource ConfiguredDataSource = ConfiguredDataSource;
 

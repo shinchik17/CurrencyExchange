@@ -1,4 +1,4 @@
-package org.alexshin.servlet.Currency;
+package org.alexshin.servlet.currency;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -6,8 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.alexshin.model.Currency;
-import org.alexshin.DTO.ErrorResponse;
+import org.alexshin.model.ErrorResponse;
+import org.alexshin.model.entity.Currency;
 import org.alexshin.repository.JDBCCurrencyRepository;
 
 import java.io.IOException;
@@ -15,9 +15,9 @@ import java.io.Writer;
 import java.sql.SQLException;
 import java.util.Optional;
 
-
-import static org.alexshin.util.Validation.*;
-import static jakarta.servlet.http.HttpServletResponse.*;
+import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static org.alexshin.util.Validation.isValidCurrencyCode;
 
 
 @WebServlet(name = "currencyServlet", value = "/currency/*")

@@ -1,8 +1,8 @@
-package org.alexshin.mapper;
+package org.alexshin.model.mapper;
 
 
-import org.alexshin.DTO.ExchangeResponse;
-import org.alexshin.model.ExchangeRate;
+import org.alexshin.model.ExchangeResponse;
+import org.alexshin.model.entity.ExchangeRate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

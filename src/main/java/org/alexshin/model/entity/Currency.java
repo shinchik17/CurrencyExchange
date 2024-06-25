@@ -1,4 +1,4 @@
-package org.alexshin.model;
+package org.alexshin.model.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

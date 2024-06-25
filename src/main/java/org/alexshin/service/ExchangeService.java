@@ -1,8 +1,8 @@
 package org.alexshin.service;
 
-import org.alexshin.DTO.ExchangeResponse;
-import org.alexshin.mapper.ExchangeRateMapper;
-import org.alexshin.model.ExchangeRate;
+import org.alexshin.model.ExchangeResponse;
+import org.alexshin.model.entity.ExchangeRate;
+import org.alexshin.model.mapper.ExchangeRateMapper;
 import org.alexshin.repository.JDBCExchangeRatesRepository;
 
 import java.math.BigDecimal;

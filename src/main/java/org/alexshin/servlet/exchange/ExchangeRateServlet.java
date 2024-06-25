@@ -1,4 +1,4 @@
-package org.alexshin.servlet.Exchange;
+package org.alexshin.servlet.exchange;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -6,8 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.alexshin.DTO.ErrorResponse;
-import org.alexshin.model.ExchangeRate;
+import org.alexshin.model.ErrorResponse;
+import org.alexshin.model.entity.ExchangeRate;
 import org.alexshin.repository.JDBCExchangeRatesRepository;
 
 import java.io.IOException;
@@ -74,7 +74,7 @@ public class ExchangeRateServlet extends HttpServlet {
 
         if (req.getPathInfo() != null) {
             exchangeRateString = req.getPathInfo().replace("/", "").substring(0, 6).toUpperCase();
-            rateString = req.getQueryString().replace("/", "").substring(5);
+            rateString = req.getReader().readLine().substring(5);
         }
 
 
