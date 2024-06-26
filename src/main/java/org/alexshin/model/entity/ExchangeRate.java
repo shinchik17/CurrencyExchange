@@ -16,7 +16,7 @@ public class ExchangeRate {
     private Currency targetCurrency;
     private BigDecimal rate;
 
-    // todo: del?
+
 
     public ExchangeRate(Currency baseCurrency, Currency targetCurrency, BigDecimal rate) {
         this.baseCurrency = baseCurrency;

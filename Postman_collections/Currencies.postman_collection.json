@@ -92,35 +92,32 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "kekus",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "kek",
+							"type": "text"
+						},
+						{
+							"key": "sign",
+							"value": "$k",
+							"type": "text"
 						}
-					}
+					]
 				},
 				"url": {
-					"raw": "{{base_url}}/currencies?name=kekus&code=kek&sign=$k",
+					"raw": "{{base_url}}/currencies",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"currencies"
-					],
-					"query": [
-						{
-							"key": "name",
-							"value": "kekus"
-						},
-						{
-							"key": "code",
-							"value": "kek"
-						},
-						{
-							"key": "sign",
-							"value": "$k"
-						}
 					]
 				},
 				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."

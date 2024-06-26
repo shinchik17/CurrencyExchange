@@ -19,11 +19,13 @@ public class ExchangeService {
     public ExchangeResponse getExchangeResponse(String baseCode, String targetCode, BigDecimal amount) throws SQLException, NoSuchElementException {
 
         ExchangeRate exchangeRate = getExchangeRate(baseCode, targetCode).orElseThrow();
+
         return mapper.exchangeRateToResponse(exchangeRate, amount);
 
     }
 
     public Optional<ExchangeRate> getExchangeRate(String baseCode, String targetCode) throws SQLException {
+
         var exchangeRate = getFromDirectExchange(baseCode, targetCode);
         if (exchangeRate.isPresent()) {
             return exchangeRate;
@@ -58,7 +60,7 @@ public class ExchangeService {
             return Optional.empty();
         }
 
-        BigDecimal rate = usdToBaseER.get().getRate().divide(usdToTargetER.get().getRate(), RoundingMode.HALF_UP);
+        BigDecimal rate = usdToTargetER.get().getRate().divide(usdToBaseER.get().getRate(), 6, RoundingMode.HALF_UP);
 
         return Optional.of(new ExchangeRate(
                 usdToBaseER.get().getBaseCurrency(),
@@ -83,7 +85,7 @@ public class ExchangeService {
         return Optional.of(new ExchangeRate(
                 inverseExchangeRate.getTargetCurrency(),
                 inverseExchangeRate.getBaseCurrency(),
-                (new BigDecimal(1)).divide(inverseExchangeRate.getRate(), RoundingMode.HALF_UP)
+                (new BigDecimal(1)).divide(inverseExchangeRate.getRate(), 6, RoundingMode.HALF_UP)
                 )
         );
     }

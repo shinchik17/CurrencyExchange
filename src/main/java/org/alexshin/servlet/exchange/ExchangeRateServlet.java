@@ -72,7 +72,7 @@ public class ExchangeRateServlet extends HttpServlet {
         String rateString = "";
         String exchangeRateString = "";
 
-        if (req.getPathInfo() != null) {
+        if (req.getPathInfo() != null && req.getReader().ready()) {
             exchangeRateString = req.getPathInfo().replace("/", "").substring(0, 6).toUpperCase();
             rateString = req.getReader().readLine().substring(5);
         }

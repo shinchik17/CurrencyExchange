@@ -11,20 +11,24 @@
 			"request": {
 				"method": "PATCH",
 				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "rate",
+							"value": "0.93",
+							"type": "text"
+						}
+					]
+				},
 				"url": {
-					"raw": "{{base_url}}/exchangeRate/usdeur?rate=0.94",
+					"raw": "{{base_url}}/exchangeRate/usdeur",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"exchangeRate",
 						"usdeur"
-					],
-					"query": [
-						{
-							"key": "rate",
-							"value": "0.94"
-						}
 					]
 				}
 			},
@@ -35,27 +39,33 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "baseCurrencyCode",
+							"value": "usd",
+							"type": "text"
+						},
+						{
+							"key": "targetCurrencyCode",
+							"value": "eur",
+							"type": "text"
+						},
+						{
+							"key": "rate",
+							"value": "0.94",
+							"type": "text"
+						}
+					]
+				},
 				"url": {
-					"raw": "{{base_url}}/exchangeRates?baseCurrencyCode=ZWG&targetCurrencyCode=RUB&rate=14.88",
+					"raw": "{{base_url}}/exchangeRates",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"exchangeRates"
-					],
-					"query": [
-						{
-							"key": "baseCurrencyCode",
-							"value": "ZWG"
-						},
-						{
-							"key": "targetCurrencyCode",
-							"value": "RUB"
-						},
-						{
-							"key": "rate",
-							"value": "14.88"
-						}
 					]
 				}
 			},
@@ -102,7 +112,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/exchange?from=usd&to=eur&amount=1",
+					"raw": "{{base_url}}/exchange?from=usd&to=eur&amount=10.5",
 					"host": [
 						"{{base_url}}"
 					],
@@ -120,7 +130,7 @@
 						},
 						{
 							"key": "amount",
-							"value": "1"
+							"value": "10.5"
 						}
 					]
 				}

@@ -72,11 +72,18 @@ public class ExchangeRatesServlet extends HttpServlet {
             return;
         }
 
+        if (baseCurrencyCode.equalsIgnoreCase(targetCurrencyCode)) {
+            resp.setStatus(SC_BAD_REQUEST);
+            errorMessage = "Base and target currency codes are identical";
+            objectMapper.writeValue(respWriter, new ErrorResponse(SC_BAD_REQUEST, errorMessage));
+            return;
+        }
+
         try {
 
             ExchangeRate exchangeRate = new ExchangeRate(
-                    currencyRepository.findByCode(baseCurrencyCode).orElseThrow(),
-                    currencyRepository.findByCode(targetCurrencyCode).orElseThrow(),
+                    currencyRepository.findByCode(baseCurrencyCode.toUpperCase()).orElseThrow(),
+                    currencyRepository.findByCode(targetCurrencyCode.toUpperCase()).orElseThrow(),
                     BigDecimal.valueOf(Double.parseDouble(rate))
             );
 
@@ -102,7 +109,7 @@ public class ExchangeRatesServlet extends HttpServlet {
 
         } catch (NoSuchElementException e) {
             resp.setStatus(SC_NOT_FOUND);
-            errorMessage = "One or both of given currencies do not represented in database";
+            errorMessage = "One or both of given currencies are not represented in database";
             objectMapper.writeValue(respWriter, new ErrorResponse(SC_NOT_FOUND, errorMessage));
         }
 
